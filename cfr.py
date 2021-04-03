@@ -39,12 +39,15 @@ async def on_message(message):
     if ';l' == message.content.lower():
         with open('points.JSON', 'r') as data:
             points = json.load(data)
-        pl = list(points.items())
-        pl.sort(reverse=True)
-        pl = dict(pl)
-        desc = "".join(f"{list(pl.keys()).index(i) + 1}. {i}: {pl[i]}\n" for i in pl)
-        await message.channel.send(embed=discord.Embed(title="Leaderboard", colour=discord.Color.blurple(),type='rich',description=desc,time=datetime.datetime,inline=True,))
-
+        if len(points) > 0:
+            # pl = list(points.items())
+            # pl.sort(reverse=True)
+            pl = sorted(points.items(), key=lambda x: x[1], reverse=True)
+            pl = dict(pl)
+            desc = "".join(f"{list(pl.keys()).index(i) + 1}. {i[:-5]}: {pl[i]}\n" for i in pl)
+            await message.channel.send(embed=discord.Embed(title="Leaderboard", colour=discord.Color.blurple(),type='rich',description=desc,time=datetime.datetime,inline=True,))
+        else:
+            await message.channel.send(embed=discord.Embed(title="Leaderboard", colour=discord.Color.blurple(),description="There are no results to show.", type="rich", time=datetime.datetime,inline=True))
     if ";p" == message.content.lower():
         with open('points.JSON') as data:
             points = json.load(data)
