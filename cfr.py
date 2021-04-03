@@ -36,8 +36,16 @@ async def on_message(message):
         else:
             await message.channel.send(embed=discord.Embed(title="Error", colour=discord.Color.red(),type="rich",description="Make sure to thank someone the correct way! Just say: Thanks @[username]", time=datetime.datetime,inline=True,))
 
+    if ';l' == message.content.lower():
+        with open('points.JSON', 'r') as data:
+            points = json.load(data)
+        pl = list(points.items())
+        pl.sort(reverse=True)
+        pl = dict(pl)
+        desc = "".join(f"{list(pl.keys()).index(i) + 1}. {i}: {pl[i]}\n" for i in pl)
+        await message.channel.send(embed=discord.Embed(title="Leaderboard", colour=discord.Color.blurple(),type='rich',description=desc,time=datetime.datetime,inline=True,))
 
-    if ";p" in message.content.lower():
+    if ";p" == message.content.lower():
         with open('points.JSON') as data:
             points = json.load(data)
         print(points)
