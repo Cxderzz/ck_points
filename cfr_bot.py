@@ -67,6 +67,7 @@ async def leaderboard_command(ctx, amt_users: int=10):
     await ctx.message.channel.send(embed=discord.Embed(title='Leaderboard', colour=discord.Color.blurple(),type='rich',description=desc,inline=True,))
 
 @bot.command(name='rm_points')
+@commands.has_role('admin')
 async def rm_points(ctx, user:discord.User=None, amt:int=None):
     with open('points.JSON', 'r') as data:
         points = collections.Counter(json.load(data))
